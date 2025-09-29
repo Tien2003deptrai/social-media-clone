@@ -1,0 +1,63 @@
+# Dependencies
+node_modules/
+.npm/
+.pnp/
+.pnp.*
+
+# Build output
+dist/
+build/
+out/
+.cache/
+.tmp/
+temp/
+tmp/
+coverage/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-*.log
+pnpm-debug.log*
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Editors/IDE
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.sample.json
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frameworks/Bundlers
+.next/
+.vite/
+.astro/
+.nuxt/
+.svelte-kit/
+.remix/
+.storybook/
+webpack-cache/
+parcel-cache/
+rollup.cache/
+.rpt2_cache/
+
+# ORM/DB
+prisma/*.db
+prisma/*.db-journal
+**/typeorm-cache/
+sequelize-data/*.sqlite
+
+# Test
+.cypress/
+playwright-report/
+test-results/
