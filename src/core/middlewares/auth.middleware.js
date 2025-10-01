@@ -1,14 +1,17 @@
-import jwt from "jsonwebtoken";
+const jwt = require('jsonwebtoken');
 
-export function getUserFromToken(req) {
-  const accessToken = req.headers.authorization?.split(' ')[1];
+const authMiddleware = (req, res, next) => {
+  const accessToken = req.cookies?.accessToken;
 
   if (!accessToken) return null;
 
   try {
     const user = jwt.verify(accessToken, process.env.JWT_SECRET);
-    return user;
+    req.user = user;
+    next();
   } catch (error) {
-    return null;
+    next(error);
   }
 }
+
+module.exports = authMiddleware;
