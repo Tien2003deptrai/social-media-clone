@@ -11,6 +11,11 @@ const PostController = {
     const post = await PostService.createPost({ ...req.body, userId })
     return res.json(ok(post, { message: "Post created successfully" }))
   }),
+
+  getPosts: asyncRoute(async (req, res, next) => {
+
+    return res.json(ok('result', { message: "Posts retrieved successfully" }));
+  }),
 }
 
 module.exports = PostController;

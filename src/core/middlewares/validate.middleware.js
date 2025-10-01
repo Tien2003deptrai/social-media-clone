@@ -1,6 +1,6 @@
 const Joi = require('joi');
-const pick = require('../utils/pick');
 const { fail } = require('@uniresp/core');
+const { pick } = require('@/core/utils');
 
 const validate = (schema) => (req, res, next) => {
   const validSchema = pick(schema, ['params', 'query', 'body']);

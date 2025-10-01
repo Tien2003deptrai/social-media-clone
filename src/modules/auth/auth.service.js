@@ -19,7 +19,7 @@ const AuthService = {
   },
 
   generateToken: (payload, type) => {
-    const expiry = type === 'access' ? '15m' : '7d';
+    const expiry = type === 'access' ? '1d' : '7d';
     const token = jwt.sign(
       payload,
       process.env.JWT_SECRET,

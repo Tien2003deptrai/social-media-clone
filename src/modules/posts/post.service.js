@@ -6,6 +6,10 @@ const PostService = {
     return await Post.create(postData)
   },
 
+  getPosts: async (filter, options) => {
+
+  },
+
 }
 
 module.exports = PostService;
