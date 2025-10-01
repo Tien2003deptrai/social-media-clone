@@ -55,13 +55,13 @@ const AuthService = {
 
       const user = await AuthService.findOrCreateUser(googlePayload);
 
-      const userPayload = { id: user._id, email: user.email };
+      const userPayload = { userId: user._id, email: user.email };
       const refreshToken = AuthService.generateToken(userPayload, 'refresh');
       const accessToken = AuthService.generateToken(userPayload, 'access');
 
       return {
         user: {
-          id: user._id,
+          userId: user._id,
           name: user.name,
           email: user.email,
           picture: user.picture,

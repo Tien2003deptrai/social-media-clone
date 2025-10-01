@@ -36,7 +36,7 @@ const AuthController = {
       if (!refreshToken) throw new SystemError('AUTH.NO_REFRESH_TOKEN', 'Refresh token not found');
 
       const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
-      const userPayload = { id: decoded.id, email: decoded.email };
+      const userPayload = { userId: decoded.userId, email: decoded.email };
       const newAccessToken = AuthService.generateToken(userPayload, 'access');
 
       return res.json(ok({ accessToken: newAccessToken }, { message: 'Token refreshed' }));
