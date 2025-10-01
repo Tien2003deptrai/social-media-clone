@@ -5,6 +5,9 @@ const { errorHandler } = require('@uniresp/server-express')
 const { NotFoundError } = require('@uniresp/errors')
 const { ok } = require('@uniresp/core')
 const { connect } = require('@/core/config/db')
+const { SystemError } = require('@uniresp/errors');
+
+const routes = require('@/routes')
 
 const app = express()
 
@@ -12,44 +15,28 @@ app.set('trust proxy', 1)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
+app.use('/api', routes)
 
 app.get('/api/health', (req, res) => {
   res.json(ok('health', { message: "service" }))
 })
 
+app.get('/api/boom', () => { throw new SystemError('Boom'); });
+
 connect()
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-app.use('/api/users', usersRouter)
+app.use((req, _res, next) => {
+  next(new NotFoundError('Route not found', { path: req.originalUrl }));
+});
 
 app.use(
   errorHandler({
     onLog: (err, req) => {
-      const timestamp = new Date().toISOString();
-      console.error(`[${timestamp}] ERROR:`, {
-        message: err.message,
-        code: err.code || 'UNKNOWN',
-        status: err.status || 500,
-        path: req.path,
-        method: req.method,
-        ip: req.ip,
-        userAgent: req.headers['user-agent'],
-      });
+      console.error('[LOG]', { msg: err.message, path: req.path });
     },
-    traceId: req => (req.headers['x-request-id']),
+    traceId: req => req.headers['x-request-id'],
   })
 );
-
-app.use((_req, res) => {
-  res.status(404).json({
-    ok: false,
-    error: {
-      code: 'ROUTE.NOT_FOUND',
-      message: 'Route not found',
-      details: { path: _req.originalUrl },
-    },
-  });
-});
-
 module.exports = app
