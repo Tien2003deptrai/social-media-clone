@@ -6,6 +6,7 @@ const { NotFoundError } = require('@uniresp/errors')
 const { ok } = require('@uniresp/core')
 const { connect } = require('@/core/config/db')
 const { SystemError } = require('@uniresp/errors');
+const cors = require('cors');
 
 const routes = require('@/routes')
 
@@ -15,6 +16,17 @@ app.set('trust proxy', 1)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
+app.use(cors({
+  origin: [process.env.FRONTEND_URL, process.env.FRONTEND_URL_TEST],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  maxAge: 86400,
+}))
+
 app.use('/api', routes)
 
 app.get('/api/health', (req, res) => {

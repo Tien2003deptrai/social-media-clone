@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -24,12 +24,33 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: function () {
+      return this.provider === 'local';
+    },
     minlength: 6
   },
   avatarUrl: {
     type: String,
     default: null
+  },
+  picture: {
+    type: String,
+    default: null
+  },
+  provider: {
+    type: String,
+    enum: ['local', 'google'],
+    default: 'local'
+  },
+  status: {
+    type: String,
+    enum: ['active', 'inactive', 'banned'],
+    default: 'active'
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin', 'moderator'],
+    default: 'user'
   },
   bio: {
     type: String,
@@ -53,7 +74,7 @@ userSchema.index({ email: 1 })
 userSchema.index({ name: 'text' })
 
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+  if (!this.isModified('password') || this.provider !== 'local') return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });

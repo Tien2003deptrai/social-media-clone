@@ -1,3 +1,5 @@
+require('dotenv').config()
+require('module-alias/register')
 const app = require('@/app')
 
 const PORT = Number(process.env.PORT) || 8080

@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 let conn;
 
 async function connect() {
-  if (!conn) conn = mongoose.connect('mongodb://localhost:27017/social-media');
+  if (!conn) {
+    const mongoUri = process.env.MONGODB_URI;
+    conn = mongoose.connect(mongoUri);
+  }
 
   return conn;
 }

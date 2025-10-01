@@ -1,3 +1,4 @@
+const { paginate } = require('@/modules/plugins');
 const mongoose = require('mongoose')
 
 const postSchema = new mongoose.Schema({
@@ -27,7 +28,9 @@ const postSchema = new mongoose.Schema({
     type: Number,
     default: 0
   }
-})
+}, { timestamps: true })
+
+postSchema.plugin(paginate)
 
 postSchema.index({ userId: 1, createdAt: -1 });
 
