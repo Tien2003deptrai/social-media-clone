@@ -4,7 +4,9 @@ const router = express.Router()
 router.use('/users', require('@/modules/users/user.routes'))
 router.use('/auth', require('@/modules/auth/auth.routes'))
 router.use('/posts', require('@/modules/posts/post.routes'))
+router.use('/comments', require('@/modules/comments/comment.routes'))
 router.use('/uploads', require('@/modules/uploads/upload.routes'))
+
 
 
 // ==== ERROR ROUTES ====
